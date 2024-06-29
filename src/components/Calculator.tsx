@@ -52,7 +52,7 @@ const Calculator = () => {
         onKeyUp={watContext.keyUp}
       />
       {watError && <div className="error-message">{watError}</div>}
-      <div className="version">{'v1.1.0'}</div>
+      <div className="version">{'v1.1.1'}</div>
     </div>
   );
 };
