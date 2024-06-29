@@ -1,4 +1,5 @@
 import { ChangeEvent, useState, useEffect, KeyboardEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface InputContext {
   value: number;
@@ -15,13 +16,15 @@ interface BatteryCalculator {
 
 export const useBatteryTimeCalculator = (): BatteryCalculator => {
 
+  const {t, i18n} = useTranslation();
+
   const settingsMinVoltage = localStorage.getItem('minVoltage');
   const settingsMaxVoltage = localStorage.getItem('maxVoltage');
   const settingsBatteryCapacity = localStorage.getItem('batteryCapacity');
   const settingsVoltageSystem = localStorage.getItem('voltageSystem');
 
-  const [volt, setVolt] = useState<number>(Number(settingsMaxVoltage) || 54);
-  const [wat, setWat] = useState<number>(300);
+  const [volt, setVolt] = useState<number>(Number(settingsMaxVoltage) || 0);
+  const [wat, setWat] = useState<number>(0);
   const [output, setOutput] = useState<string>('2 часа 12 минут');
   const [percentage, setPercentage] = useState<number>(0);
 
@@ -66,22 +69,22 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
 
   const calculateRemainingTime = (currentVoltage: number, powerConsumption: number): void => {
     if (!currentVoltage || !powerConsumption) {
-      setOutput('Введите значение потребления');
+      setOutput(t('calculator.empty'));
       return;
     }
 
     if (currentVoltage > 54) {
-      setOutput(`Максимальное напряжение ${settingsMaxVoltage}В`);
+      setOutput(t('calculator.maxError', { value: settingsMaxVoltage }));
       return;
     }
 
     if (currentVoltage < 44) {
-      setOutput(`Минимальное напряжение ${settingsMinVoltage}В`);
+      setOutput(t('calculator.minError', { value: settingsMinVoltage }));
       return;
     }
 
     if (powerConsumption < 0) {
-      setOutput('Потребление не может быть отрицательным');
+      setOutput(t('calculator.lessZeroError'));
       return;
     }
 
@@ -97,7 +100,7 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
     setPercentage(percentage);
 
     if (remainingTimeHours < 0.1) {
-      setOutput('Заряд батареи исчерпан');
+      setOutput(t('calculator.notBatteryError'));
       return;
     }
 
@@ -105,7 +108,7 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
   };
 
   const getHoursWord = (hours: number): string => {
-    const hoursCases = ['часов', 'час', 'часа', 'часа'];
+    const hoursCases = [t('calculator.hours1'), t('calculator.hours2'), t('calculator.hours3')];
     if (hours % 10 === 1 && hours % 100 !== 11) return hoursCases[1];
     if (hours % 10 >= 2 && hours % 10 <= 4 && (hours % 100 < 10 || hours % 100 >= 20))
       return hoursCases[2];
@@ -113,7 +116,7 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
   };
 
   const getMinutesWord = (minutes: number): string => {
-    const minutesCases = ['минута', 'минуты', 'минут'];
+    const minutesCases = [t('calculator.minutes1'), t('calculator.minutes2'), t('calculator.minutes3')];
     if (minutes % 10 === 1 && minutes % 100 !== 11) return minutesCases[0];
     if (minutes % 10 >= 2 && minutes % 10 <= 4 && (minutes % 100 < 10 || minutes % 100 >= 20))
       return minutesCases[1];
@@ -122,7 +125,7 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
 
   useEffect(() => {
     calculateRemainingTime(volt, wat);
-  }, [volt, wat]);
+  }, [volt, wat, i18n.language]);
 
   return {
     output,

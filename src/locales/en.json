@@ -1,0 +1,30 @@
+{
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "minVoltage": "Minimum voltage (V)",
+    "maxVoltage": "Maximum voltage (V)",
+    "batteryCapacity": "Battery capacity (Ah)",
+    "systemVoltage": "System Voltage (V)"
+  },
+  "main": {
+    "batteryVoltage": "Battery charge (V)",
+    "wat": "Power consumption (W)"
+  },
+  "en": "English",
+  "ru": "Russian",
+  "ua": "Ukrainian",
+  "calculator": {
+    "empty": "Enter consumption value!",
+    "maxError": "Maximum voltage {{value}}V",
+    "minError": "Minimum voltage {{value}}V",
+    "lessZeroError": "Consumption cannot be negative",
+    "notBatteryError": "Battery low",
+    "hours1": "hours",
+    "hours2": "hour",
+    "hours3": "hours",
+    "minutes1": "minute",
+    "minutes2": "minutes",
+    "minutes3": "minutes"
+  }
+}

@@ -115,3 +115,18 @@
 .settings-exit-done {
   transform: translateX(105%);
 }
+
+.language-selector {
+  font-size: 1.2rem;
+  padding: 0.5em;
+  width: 100%;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid var(--color-text);
+  color: var(--color-text);
+  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+  background-color: var(--color-background);
+}

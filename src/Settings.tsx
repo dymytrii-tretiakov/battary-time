@@ -3,6 +3,8 @@ import { useSettings } from './useSettings';
 import { CSSTransition } from 'react-transition-group';
 import rightArrow from './assets/right-arrow.svg';
 import SettingsButton from './SettingsButton';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from './LanguageSelector';
 
 const Settings = () => {
   const {
@@ -21,6 +23,8 @@ const Settings = () => {
 
   const nodeRef = React.useRef(null);
 
+  const { t } = useTranslation();
+
   return (
     <>
       <SettingsButton onClick={openSettings} />
@@ -33,19 +37,21 @@ const Settings = () => {
       >
         <div ref={nodeRef} className="settings">
           <div className="settings-header">
-            <h2>Настройки</h2>
+            <h2>{t('settings.title')}</h2>
             <button onClick={closeSettings} className="close-settings settings-button">
               <img src={rightArrow} alt="Close settings" className="settings-icon" />
             </button>
           </div>
-          <label htmlFor="minVoltage">Минимальное напряжение (V)</label>
+          <label htmlFor="">{t('settings.language')}</label>
+          <LanguageSelector />
+          <label htmlFor="minVoltage">{t('settings.minVoltage')}</label>
           <input
             type="number"
             id="minVoltage"
             value={minVoltage || ''}
             onChange={e => setMinVoltage(Number(e.target.value))}
           />
-          <label htmlFor="maxVoltage">Максимальное напряжение (V)</label>
+          <label htmlFor="maxVoltage">{t('settings.maxVoltage')}</label>
           <input
             type="number"
             id="maxVoltage"
@@ -53,7 +59,7 @@ const Settings = () => {
             onChange={e => setMaxVoltage(Number(e.target.value))}
           />
 
-          <label htmlFor="batteryCapacity">Емкость батарей (Ah)</label>
+          <label htmlFor="batteryCapacity">{t('settings.batteryCapacity')}</label>
           <input
             type="number"
             id="batteryCapacity"
@@ -61,7 +67,7 @@ const Settings = () => {
             onChange={e => setBatteryCapacity(Number(e.target.value))}
           />
 
-          <label htmlFor="voltageSystem">Напряжение системы (V)</label>
+          <label htmlFor="voltageSystem">{t('settings.systemVoltage')}</label>
           <input
             type="number"
             id="voltageSystem"
