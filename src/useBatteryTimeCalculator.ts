@@ -6,15 +6,21 @@ interface InputContext {
   keyUp?: (e: KeyboardEvent<HTMLInputElement>) => void;
 }
 
-interface UseApp {
+interface BatteryCalculator {
   output: string;
   voltContext: InputContext;
   watContext: InputContext;
   percentage: number;
 }
 
-export const useApp = (): UseApp => {
-  const [volt, setVolt] = useState<number>(54);
+export const useBatteryTimeCalculator = (): BatteryCalculator => {
+
+  const settingsMinVoltage = localStorage.getItem('minVoltage');
+  const settingsMaxVoltage = localStorage.getItem('maxVoltage');
+  const settingsBatteryCapacity = localStorage.getItem('batteryCapacity');
+  const settingsVoltageSystem = localStorage.getItem('voltageSystem');
+
+  const [volt, setVolt] = useState<number>(Number(settingsMaxVoltage) || 54);
   const [wat, setWat] = useState<number>(300);
   const [output, setOutput] = useState<string>('2 часа 12 минут');
   const [percentage, setPercentage] = useState<number>(0);
@@ -47,8 +53,8 @@ export const useApp = (): UseApp => {
   };
 
   const calculateBatteryPercentage = (currentVoltage: number): number => {
-    const maxVoltage = 54;
-    const minVoltage = 44;
+    const maxVoltage = Number(settingsMaxVoltage) || 54;
+    const minVoltage = Number(settingsMinVoltage || 44);
     const voltageRange = maxVoltage - minVoltage;
 
     // Calculate percentage based on voltage range
@@ -65,12 +71,12 @@ export const useApp = (): UseApp => {
     }
 
     if (currentVoltage > 54) {
-      setOutput('Максимальное напряжение 54В');
+      setOutput(`Максимальное напряжение ${settingsMaxVoltage}В`);
       return;
     }
 
     if (currentVoltage < 44) {
-      setOutput('Минимальное напряжение 44В');
+      setOutput(`Минимальное напряжение ${settingsMinVoltage}В`);
       return;
     }
 
@@ -79,7 +85,7 @@ export const useApp = (): UseApp => {
       return;
     }
 
-    const batteryCapacityWh = 200 * 48; // Assuming 1000 Wh capacity for calculation
+    const batteryCapacityWh = Number(settingsBatteryCapacity) * Number(settingsVoltageSystem); // Assuming 1000 Wh capacity for calculation
     const percentage = calculateBatteryPercentage(currentVoltage);
     const remainingCapacityWh = (percentage / 100) * batteryCapacityWh;
 
