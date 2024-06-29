@@ -1,5 +1,5 @@
 .settings-container {
-  padding: 1rem;
+  padding: 1rem !important;
 }
 
 .settings-button {
@@ -135,4 +135,26 @@
   text-align: center;
   background-color: var(--color-background);
   margin-bottom: 1rem;
+}
+
+.wiggle {
+  animation: wiggle 0.2s infinite;
+}
+
+@keyframes wiggle {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }

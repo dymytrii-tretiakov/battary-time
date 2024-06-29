@@ -1,4 +1,5 @@
 import React from 'react';
+import cls from 'classnames';
 import { useSettings } from '../hooks/useSettings';
 import { CSSTransition } from 'react-transition-group';
 import rightArrow from '../assets/images/right-arrow.svg';
@@ -21,7 +22,9 @@ const Settings = () => {
     setVoltageSystem,
     settingsVisible,
     closeSettings,
-    openSettings
+    openSettings,
+    handleTitleClick,
+    titleWiggle
   } = useSettings();
 
   const nodeRef = React.useRef(null);
@@ -82,7 +85,9 @@ const Settings = () => {
         <div ref={nodeRef} className="settings">
           <div className="container settings-container">
             <div className="settings-header">
-              <h2>{t('settings.title')}</h2>
+              <h2 onClick={handleTitleClick} className={cls({ wiggle: titleWiggle })}>
+                {t('settings.title')}
+              </h2>
               <button onClick={closeSettings} className="close-settings settings-button">
                 <img src={rightArrow} alt="Close settings" className="settings-icon" />
               </button>
@@ -131,7 +136,7 @@ const Settings = () => {
               {t('resetGuide')}
             </button>
           </div>
-        <Guide guides={guides} showGuide={showGuide} localStorageKey={localStorageKey} />
+          <Guide guides={guides} showGuide={showGuide} localStorageKey={localStorageKey} />
         </div>
       </CSSTransition>
     </>

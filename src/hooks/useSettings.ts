@@ -10,6 +10,8 @@ interface Settings {
   setBatteryCapacity: (capacity: number) => void;
   voltageSystem: number;
   setVoltageSystem: (voltage: number) => void;
+  handleTitleClick: () => void;
+  titleWiggle: boolean;
 
   settingsVisible: boolean;
   openSettings: () => void;
@@ -28,6 +30,7 @@ export const useSettings = (): Settings => {
     setVoltageSystem
   } = useSettingsStore();
   const [settingsVisible, setSettingsVisible] = useState(false);
+  const [titleWiggle, setTitleWiggle] = useState(false);
 
   // Close settings by swipe left to right
   const handleTouchStart = (e: TouchEvent) => {
@@ -70,6 +73,14 @@ export const useSettings = (): Settings => {
     setSettingsVisible(false);
   };
 
+  const handleTitleClick = () => {
+    const audio = new Audio('/audio/electric.mp3');
+
+    audio.play();
+    setTitleWiggle(true);
+    setTimeout(() => setTitleWiggle(false), 800);
+  };
+
   return {
     minVoltage,
     maxVoltage,
@@ -81,6 +92,8 @@ export const useSettings = (): Settings => {
     setVoltageSystem,
     settingsVisible,
     openSettings,
-    closeSettings
+    closeSettings,
+    handleTitleClick,
+    titleWiggle
   };
 };
