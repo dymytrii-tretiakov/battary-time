@@ -1,8 +1,9 @@
-import { ChangeEvent, useState, useEffect } from 'react';
+import { ChangeEvent, useState, useEffect, KeyboardEvent } from 'react';
 
 interface InputContext {
   value: number;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  keyUp?: (e: KeyboardEvent<HTMLInputElement>) => void;
 }
 
 interface UseApp {
@@ -13,19 +14,36 @@ interface UseApp {
 }
 
 export const useApp = (): UseApp => {
-  const [volt, setVolt] = useState<number>(0);
-  const [wat, setWat] = useState<number>(0);
+  const [volt, setVolt] = useState<number>(54);
+  const [wat, setWat] = useState<number>(300);
   const [output, setOutput] = useState<string>('2 часа 12 минут');
   const [percentage, setPercentage] = useState<number>(0);
 
   const voltContext: InputContext = {
     value: volt,
-    onChange: e => setVolt(Number(e.target.value))
+    onChange: e => {
+      setVolt(Number(e.target.value));
+    },
+    keyUp: e => {
+      if (e.key === 'Enter') {
+        const nextInput = e.currentTarget.nextElementSibling
+          ?.nextElementSibling as HTMLInputElement;
+        console.log(nextInput);
+        if (nextInput) nextInput.focus();
+      }
+    }
   };
 
   const watContext: InputContext = {
     value: wat,
-    onChange: e => setWat(Number(e.target.value))
+    onChange: e => {
+      setWat(Number(e.target.value));
+    },
+    keyUp: e => {
+      if (e.key === 'Enter') {
+        e.currentTarget.blur();
+      }
+    }
   };
 
   const calculateBatteryPercentage = (currentVoltage: number): number => {
@@ -37,7 +55,7 @@ export const useApp = (): UseApp => {
     const percentage = ((currentVoltage - minVoltage) / voltageRange) * 100;
 
     // Clamp percentage to range [0, 100]
-    return Math.max(0, Math.min(100, percentage));
+    return Math.ceil(Math.max(0, Math.min(100, percentage)));
   };
 
   const calculateRemainingTime = (currentVoltage: number, powerConsumption: number): void => {
