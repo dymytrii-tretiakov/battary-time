@@ -74,7 +74,7 @@ export const useSettings = (): Settings => {
   };
 
   const handleTitleClick = () => {
-    const audio = new Audio('/audio/electric.mp3');
+    const audio = new Audio('./audio/electric.mp3');
 
     audio.play();
     setTitleWiggle(true);

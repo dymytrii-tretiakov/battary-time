@@ -18,7 +18,7 @@ const Calculator = () => {
   } = useBatteryTimeCalculator();
 
   const handleTimeClick = () => {
-    const audio = new Audio('/audio/ticking.mp3');
+    const audio = new Audio('./audio/ticking.mp3');
 
     audio.play();
   };
