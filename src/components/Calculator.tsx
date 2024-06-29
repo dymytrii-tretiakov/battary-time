@@ -18,9 +18,7 @@ const Calculator = () => {
   } = useBatteryTimeCalculator();
 
   const handleTimeClick = () => {
-    const audio = new Audio('./audio/ticking.mp3');
-
-    audio.play();
+    new Audio('./audio/ticking.mp3').play();
   };
 
   const { t } = useTranslation();

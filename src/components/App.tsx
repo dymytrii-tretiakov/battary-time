@@ -1,4 +1,4 @@
-import '../assets/css/App.css';
+import '../assets/css/app.css';
 import Calculator from './Calculator';
 import Settings from './Settings';
 
