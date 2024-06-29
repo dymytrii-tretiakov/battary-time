@@ -74,7 +74,7 @@
   align-items: center;
   flex-direction: column;
   gap: 1em;
-  padding: 2em;
+  padding: 7rem 2em 2rem 2rem;
   box-shadow: 0 0 2em #00000022;
   transform: translateX(105%);
   transition: transform 300ms;
