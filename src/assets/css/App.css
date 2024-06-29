@@ -130,3 +130,7 @@
   text-align: center;
   background-color: var(--color-background);
 }
+
+.version {
+  color: #888;
+}

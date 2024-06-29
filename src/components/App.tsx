@@ -1,12 +1,12 @@
-import './App.css';
+import '../assets/css/App.css';
 import Calculator from './Calculator';
 import Settings from './Settings';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import ru from './locales/ru.json';
-import en from './locales/en.json';
-import ua from './locales/ua.json';
+import ru from '../locales/ru.json';
+import en from '../locales/en.json';
+import ua from '../locales/ua.json';
 
 i18next.use(initReactI18next).init({
   resources: {

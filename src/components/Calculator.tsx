@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useBatteryTimeCalculator } from './useBatteryTimeCalculator';
+import { useBatteryTimeCalculator } from '../hooks/useBatteryTimeCalculator';
 
 const Calculator = () => {
   const { output, voltContext, watContext, percentage } = useBatteryTimeCalculator();
@@ -34,6 +34,7 @@ const Calculator = () => {
         enterKeyHint="done"
         onKeyUp={watContext.keyUp}
       />
+      <div className="version">{'v1.1.0'}</div>
     </div>
   );
 };

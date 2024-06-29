@@ -1,5 +1,6 @@
 import { ChangeEvent, useState, useEffect, KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSettingsStore } from '../store/settingsStore';
 
 interface InputContext {
   value: number;
@@ -15,17 +16,18 @@ interface BatteryCalculator {
 }
 
 export const useBatteryTimeCalculator = (): BatteryCalculator => {
+  const { t, i18n } = useTranslation();
 
-  const {t, i18n} = useTranslation();
-
-  const settingsMinVoltage = localStorage.getItem('minVoltage');
-  const settingsMaxVoltage = localStorage.getItem('maxVoltage');
-  const settingsBatteryCapacity = localStorage.getItem('batteryCapacity');
-  const settingsVoltageSystem = localStorage.getItem('voltageSystem');
+  const {
+    minVoltage: settingsMinVoltage,
+    maxVoltage: settingsMaxVoltage,
+    batteryCapacity: settingsBatteryCapacity,
+    voltageSystem: settingsVoltageSystem
+  } = useSettingsStore();
 
   const [volt, setVolt] = useState<number>(Number(settingsMaxVoltage) || 0);
   const [wat, setWat] = useState<number>(0);
-  const [output, setOutput] = useState<string>('2 часа 12 минут');
+  const [output, setOutput] = useState<string>('');
   const [percentage, setPercentage] = useState<number>(0);
 
   const voltContext: InputContext = {
@@ -116,7 +118,11 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
   };
 
   const getMinutesWord = (minutes: number): string => {
-    const minutesCases = [t('calculator.minutes1'), t('calculator.minutes2'), t('calculator.minutes3')];
+    const minutesCases = [
+      t('calculator.minutes1'),
+      t('calculator.minutes2'),
+      t('calculator.minutes3')
+    ];
     if (minutes % 10 === 1 && minutes % 100 !== 11) return minutesCases[0];
     if (minutes % 10 >= 2 && minutes % 10 <= 4 && (minutes % 100 < 10 || minutes % 100 >= 20))
       return minutesCases[1];
@@ -125,7 +131,15 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
 
   useEffect(() => {
     calculateRemainingTime(volt, wat);
-  }, [volt, wat, i18n.language]);
+  }, [
+    volt,
+    wat,
+    i18n.language,
+    settingsMinVoltage,
+    settingsMaxVoltage,
+    settingsBatteryCapacity,
+    settingsVoltageSystem
+  ]);
 
   return {
     output,

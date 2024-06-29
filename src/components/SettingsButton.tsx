@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import gearIcon from './assets/gear.svg';
+import gearIcon from '../assets/images/gear.svg';
 
 interface SettingsButtonProps {
   onClick: () => void;
