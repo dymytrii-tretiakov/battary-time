@@ -15,6 +15,8 @@ interface BatteryCalculator {
   percentage: number;
   settingsMinVoltage: number;
   settingsMaxVoltage: number;
+  volError: string;
+  watError: string;
 }
 
 export const useBatteryTimeCalculator = (): BatteryCalculator => {
@@ -31,6 +33,8 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
   const [wat, setWat] = useState<number>(0);
   const [output, setOutput] = useState<string>('');
   const [percentage, setPercentage] = useState<number>(0);
+  const [volError, setVolError] = useState<string>('');
+  const [watError, setWatError] = useState<string>('');
 
   const voltContext: InputContext = {
     value: volt,
@@ -77,12 +81,12 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
       return;
     }
 
-    if (currentVoltage > 54) {
+    if (currentVoltage > settingsMaxVoltage) {
       setOutput(t('calculator.maxError', { value: settingsMaxVoltage }));
       return;
     }
 
-    if (currentVoltage < 44) {
+    if (currentVoltage < settingsMinVoltage) {
       setOutput(t('calculator.minError', { value: settingsMinVoltage }));
       return;
     }
@@ -143,12 +147,30 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
     settingsVoltageSystem
   ]);
 
+  useEffect(() => {
+    if (volt < Number(settingsMinVoltage)) {
+      setVolError(t('calculator.minError', { value: settingsMinVoltage }));
+    } else if (volt > Number(settingsMaxVoltage)) {
+      setVolError(t('calculator.maxError', { value: settingsMaxVoltage }));
+    } else {
+      setVolError('');
+    }
+
+    if (wat < 0) {
+      setWatError(t('calculator.lessZeroError'));
+    } else {
+      setWatError('');
+    }
+  }, [volt, settingsMinVoltage, settingsMaxVoltage, wat]);
+
   return {
     output,
     voltContext,
     watContext,
     percentage,
     settingsMinVoltage,
-    settingsMaxVoltage
+    settingsMaxVoltage,
+    volError,
+    watError
   };
 };

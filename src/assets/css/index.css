@@ -6,6 +6,7 @@
   color-scheme: light dark;
   --color-text: #1a1a1a;
   --color-background: #f8f8f8;
+  --color-error: #c52222;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -71,6 +72,7 @@ input {
   :root {
     --color-text: #f8f8f8;
     --color-background: #1a1a1a;
+    --color-error: #e44444;
   }
 
   .settings-button {

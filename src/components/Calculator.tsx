@@ -1,9 +1,18 @@
 import { useTranslation } from 'react-i18next';
+import cls from 'classnames';
 import { useBatteryTimeCalculator } from '../hooks/useBatteryTimeCalculator';
 
 const Calculator = () => {
-  const { output, voltContext, watContext, percentage, settingsMinVoltage, settingsMaxVoltage } =
-    useBatteryTimeCalculator();
+  const {
+    output,
+    voltContext,
+    watContext,
+    percentage,
+    settingsMinVoltage,
+    settingsMaxVoltage,
+    volError,
+    watError
+  } = useBatteryTimeCalculator();
 
   const { t } = useTranslation();
 
@@ -11,8 +20,11 @@ const Calculator = () => {
     <div className="container">
       <div className="time">{output}</div>
       <div className="percentage">{percentage}%</div>
-      <label htmlFor="voltage">{t('main.batteryVoltage')}</label>
+      <label className={cls({ error: volError })} htmlFor="voltage">
+        {t('main.batteryVoltage')}
+      </label>
       <input
+        className={cls({ error: volError })}
         inputMode="decimal"
         type="number"
         name="voltage"
@@ -23,8 +35,12 @@ const Calculator = () => {
         min={settingsMinVoltage}
         onKeyUp={voltContext.keyUp}
       />
-      <label htmlFor="wat">{t('main.wat')}</label>
+      {volError && <div className="error-message">{volError}</div>}
+      <label htmlFor="wat" className={cls({ error: watError })}>
+        {t('main.wat')}
+      </label>
       <input
+        className={cls({ error: watError })}
         inputMode="decimal"
         type="number"
         name="wat"
@@ -35,6 +51,7 @@ const Calculator = () => {
         enterKeyHint="done"
         onKeyUp={watContext.keyUp}
       />
+      {watError && <div className="error-message">{watError}</div>}
       <div className="version">{'v1.1.0'}</div>
     </div>
   );
