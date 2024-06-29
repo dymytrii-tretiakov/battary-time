@@ -10,7 +10,7 @@ function App() {
       <div className="percentage">{percentage}%</div>
       <label htmlFor="voltage">Заряд акомуляторов (V)</label>
       <input
-        inputMode="numeric"
+        inputMode="decimal"
         type="number"
         name="voltage"
         value={voltContext.value || ''}
@@ -22,7 +22,7 @@ function App() {
       />
       <label htmlFor="wat">Потребление (W)</label>
       <input
-        inputMode="numeric"
+        inputMode="decimal"
         type="number"
         name="wat"
         value={watContext.value || ''}
