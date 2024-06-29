@@ -72,4 +72,8 @@ input {
     --color-text: #f8f8f8;
     --color-background: #1a1a1a;
   }
+
+  .settings-button {
+    filter: invert(1);
+  }
 }

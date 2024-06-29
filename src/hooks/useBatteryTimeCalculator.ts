@@ -13,6 +13,8 @@ interface BatteryCalculator {
   voltContext: InputContext;
   watContext: InputContext;
   percentage: number;
+  settingsMinVoltage: number;
+  settingsMaxVoltage: number;
 }
 
 export const useBatteryTimeCalculator = (): BatteryCalculator => {
@@ -145,6 +147,8 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
     output,
     voltContext,
     watContext,
-    percentage
+    percentage,
+    settingsMinVoltage,
+    settingsMaxVoltage
   };
 };

@@ -2,7 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { useBatteryTimeCalculator } from '../hooks/useBatteryTimeCalculator';
 
 const Calculator = () => {
-  const { output, voltContext, watContext, percentage } = useBatteryTimeCalculator();
+  const { output, voltContext, watContext, percentage, settingsMinVoltage, settingsMaxVoltage } =
+    useBatteryTimeCalculator();
 
   const { t } = useTranslation();
 
@@ -18,8 +19,8 @@ const Calculator = () => {
         value={voltContext.value || ''}
         onChange={voltContext.onChange}
         enterKeyHint="next"
-        max={54}
-        min={44}
+        max={settingsMaxVoltage}
+        min={settingsMinVoltage}
         onKeyUp={voltContext.keyUp}
       />
       <label htmlFor="wat">{t('main.wat')}</label>
