@@ -42,7 +42,11 @@ const Calculator = () => {
   return (
     <div className="container">
       <div className="time">{output}</div>
-      <div className="percentage">{percentage}%</div>
+      <div className={cls("percentage", {
+        error: percentage < 15,
+        warning: percentage >= 15 && percentage < 50,
+        success: percentage >= 50
+      })}>{percentage}%</div>
       <label className={cls({ error: volError })} htmlFor="voltage">
         {t('main.batteryVoltage')}
       </label>
@@ -65,7 +69,7 @@ const Calculator = () => {
       </label>
       <input
         className={cls({ error: watError })}
-        inputMode="decimal"
+        inputMode="numeric"
         type="number"
         name="wat"
         value={watContext.value || ''}
@@ -77,7 +81,7 @@ const Calculator = () => {
         ref={watInputRef}
       />
       {watError && <div className="error-message">{watError}</div>}
-      <div className="version">{'v1.1.2'}</div>
+      <div className="version">{'v1.1.3'}</div>
       <Guide guides={guides} showGuide={showGuide} localStorageKey={localStorageKey} />
     </div>
   );

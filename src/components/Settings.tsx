@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 import { GuideOverviewProps } from './GuideOverview';
 import Guide from './Guide';
+import '../assets/css/settings.css';
 
 const Settings = () => {
   const {
@@ -79,7 +80,7 @@ const Settings = () => {
         unmountOnExit
       >
         <div ref={nodeRef} className="settings">
-          <div className="container">
+          <div className="container settings-container">
             <div className="settings-header">
               <h2>{t('settings.title')}</h2>
               <button onClick={closeSettings} className="close-settings settings-button">

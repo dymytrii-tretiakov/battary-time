@@ -16,6 +16,7 @@
   font-size: 20px;
   text-align: center;
   width: 360px;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .guide-arrow {

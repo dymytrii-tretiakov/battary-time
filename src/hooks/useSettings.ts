@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSettingsStore } from '../store/settingsStore';
 
 interface Settings {
@@ -28,6 +28,39 @@ export const useSettings = (): Settings => {
     setVoltageSystem
   } = useSettingsStore();
   const [settingsVisible, setSettingsVisible] = useState(false);
+
+  // Close settings by swipe left to right
+  const handleTouchStart = (e: TouchEvent) => {
+    const touch = e.touches[0];
+    const x = touch.clientX;
+    const y = touch.clientY;
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - x;
+      const deltaY = touch.clientY - y;
+
+      if (deltaX > 100 && Math.abs(deltaY) < 100) {
+        setSettingsVisible(false);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+
+    document.addEventListener('touchmove', handleTouchMove);
+    document.addEventListener('touchend', handleTouchEnd);
+  };
+
+  useEffect(() => {
+    document.addEventListener('touchstart', handleTouchStart);
+
+    return () => {
+      document.removeEventListener('touchstart', handleTouchStart);
+    };
+  }, []);
 
   const openSettings = () => {
     setSettingsVisible(true);

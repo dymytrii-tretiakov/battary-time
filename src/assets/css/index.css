@@ -8,6 +8,8 @@
   --color-guide-text: #f8f8f8;
   --color-background: #f8f8f8;
   --color-error: #c52222;
+  --color-success: #2e8b57;
+  --color-warning: #f5a623;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,13 +20,18 @@
 .container {
   width: 100%;
   margin: 0 auto;
-  padding: 0.5rem;
+  padding: calc(2rem + 50px) 1rem 1rem 1rem;
   max-width: 640px;
 
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  align-items: center;
+
 }
+
+
 
 a {
   font-weight: 500;
@@ -37,9 +44,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100dvh;
 
   color: var(--color-text);
@@ -53,7 +57,7 @@ h1 {
 
 input {
   font-size: 2rem;
-  padding: 0.5em;
+  padding: 0 0.5em;
   width: 100%;
   box-sizing: border-box;
   border: 0;
@@ -64,10 +68,12 @@ input {
   width: 100%;
   text-align: center;
   background-color: var(--color-background);
+  margin-bottom: 1rem;
 }
 
 .time {
   font-size: 2rem;
+  text-align: center;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -75,6 +81,8 @@ input {
     --color-text: #f8f8f8;
     --color-background: #1a1a1a;
     --color-error: #e44444;
+    --color-success: #4ac07d;
+    --color-warning: #f3b551;
   }
 
   .settings-button {

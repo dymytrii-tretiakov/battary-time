@@ -30,7 +30,7 @@ const GuideOverview: FC<GuideOverviewProps> = ({ element, text, onNext }) => {
       const resizeObserver = new ResizeObserver(() => {
         const { bottom, top } = element.current!.getBoundingClientRect();
         if (bottom > window.innerHeight / 2) {
-          arrowRef.current!.style.transform = 'rotate(180deg)';
+          arrowRef.current!.style.transform = 'rotate(180deg) translateX(50%)';
           arrowRef.current!.style.top = `${top - 45}px`;
           textRef.current!.style.top = `${top - 65 - textRef.current!.getBoundingClientRect().height}px`;
         } else {
