@@ -14,6 +14,7 @@
   "en": "English",
   "ru": "Russian",
   "ua": "Ukrainian",
+  "jp": "Japanese",
   "calculator": {
     "empty": "Enter consumption value!",
     "maxError": "Maximum voltage {{value}}V",

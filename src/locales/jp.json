@@ -1,0 +1,31 @@
+{
+  "settings": {
+    "title": "設定",
+    "language": "言語",
+    "minVoltage": "最小電圧 (V)",
+    "maxVoltage": "最大電圧 (V)",
+    "batteryCapacity": "バッテリ容量 (Ah)",
+    "systemVoltage": "システム電圧 (V)"
+  },
+  "main": {
+    "batteryVoltage": "バッテリ電圧 (V)",
+    "wat": "消費電力 (W)"
+  },
+  "en": "英語",
+  "ru": "ロシア語",
+  "ua": "ウクライナ語",
+  "jp": "日本語",
+  "calculator": {
+    "empty": "消費量を入力してください！",
+    "maxError": "最大電圧 {{value}}V",
+    "minError": "最小電圧 {{value}}V",
+    "lessZeroError": "消費量は負になることはできません",
+    "notBatteryError": "バッテリが低いです",
+    "hours1": "時間",
+    "hours2": "時間",
+    "hours3": "時間",
+    "minutes1": "分",
+    "minutes2": "分",
+    "minutes3": "分"
+  }
+}
