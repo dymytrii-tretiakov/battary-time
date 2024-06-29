@@ -5,6 +5,7 @@
 
   color-scheme: light dark;
   --color-text: #1a1a1a;
+  --color-guide-text: #f8f8f8;
   --color-background: #f8f8f8;
   --color-error: #c52222;
 
@@ -18,6 +19,7 @@
   width: 100%;
   margin: 0 auto;
   padding: 0.5rem;
+  max-width: 640px;
 
   display: flex;
   flex-direction: column;

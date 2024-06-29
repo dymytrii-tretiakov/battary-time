@@ -5,7 +5,14 @@
     "minVoltage": "Minimum voltage (V)",
     "maxVoltage": "Maximum voltage (V)",
     "batteryCapacity": "Battery capacity (Ah)",
-    "systemVoltage": "System Voltage (V)"
+    "systemVoltage": "System Voltage (V)",
+    "guide": {
+      "language": "You can change the language to any of the available ones",
+      "minVoltage": "The minimum voltage at which the battery is considered discharged",
+      "maxVoltage": "The maximum voltage at which the battery is considered charged",
+      "batteryCapacity": "Battery capacity in ampere-hours. Usually indicated on the battery or in its passport.",
+      "systemVoltage": "System voltage. Typically 12, 24, or 48 volts"
+    }
   },
   "main": {
     "batteryVoltage": "Battery charge (V)",
@@ -27,5 +34,10 @@
     "minutes1": "minute",
     "minutes2": "minutes",
     "minutes3": "minutes"
-  }
+  },
+  "guide": {
+    "voltage": "The value of the voltage on the battery. You can find out by measuring the voltage on the battery, or you can see it on the screen of the controller/inverter.",
+    "wat": "Power consumption. You can find out by looking at the controller/inverter screen, or calculate the approximate power of all connected devices."
+  },
+  "resetGuide": "Show guide again"
 }

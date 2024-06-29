@@ -1,6 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import cls from 'classnames';
 import { useBatteryTimeCalculator } from '../hooks/useBatteryTimeCalculator';
+import { useRef } from 'react';
+import Guide from './Guide';
+import { GuideOverviewProps } from './GuideOverview';
 
 const Calculator = () => {
   const {
@@ -15,6 +18,26 @@ const Calculator = () => {
   } = useBatteryTimeCalculator();
 
   const { t } = useTranslation();
+
+  // Guide
+  const volInputRef = useRef<HTMLInputElement>(null);
+  const watInputRef = useRef<HTMLInputElement>(null);
+
+  const guides: Omit<GuideOverviewProps, 'onNext'>[] = [
+    {
+      element: volInputRef,
+      text: t('guide.voltage')
+    },
+    {
+      element: watInputRef,
+      text: t('guide.wat')
+    }
+  ];
+
+  const localStorageKey: string = 'enableCalculatorGuide';
+  const showGuide: boolean =
+    localStorage.getItem(localStorageKey) === null ||
+    localStorage.getItem(localStorageKey) === 'true';
 
   return (
     <div className="container">
@@ -34,6 +57,7 @@ const Calculator = () => {
         max={settingsMaxVoltage}
         min={settingsMinVoltage}
         onKeyUp={voltContext.keyUp}
+        ref={volInputRef}
       />
       {volError && <div className="error-message">{volError}</div>}
       <label htmlFor="wat" className={cls({ error: watError })}>
@@ -50,9 +74,11 @@ const Calculator = () => {
         max={2500}
         enterKeyHint="done"
         onKeyUp={watContext.keyUp}
+        ref={watInputRef}
       />
       {watError && <div className="error-message">{watError}</div>}
-      <div className="version">{'v1.1.1'}</div>
+      <div className="version">{'v1.1.2'}</div>
+      <Guide guides={guides} showGuide={showGuide} localStorageKey={localStorageKey} />
     </div>
   );
 };
