@@ -91,7 +91,7 @@ const Calculator = () => {
         ref={watInputRef}
       />
       {watError && <div className="error-message">{watError}</div>}
-      <div className="version">{'v1.1.4'}</div>
+      <div className="version">{'v1.2.0'}</div>
       <Guide guides={guides} showGuide={showGuide} localStorageKey={localStorageKey} />
     </div>
   );

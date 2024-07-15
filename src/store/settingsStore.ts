@@ -13,7 +13,7 @@ type SettingsStore = {
 
 export const useSettingsStore = create<SettingsStore>(set => ({
   minVoltage: Number(localStorage.getItem('minVoltage')) || 44,
-  maxVoltage: Number(localStorage.getItem('maxVoltage')) || 54,
+  maxVoltage: Number(localStorage.getItem('maxVoltage')) || 52,
   batteryCapacity: Number(localStorage.getItem('batteryCapacity')) || 200,
   voltageSystem: Number(localStorage.getItem('voltageSystem')) || 48,
   setMinVoltage: (voltage: number) => {

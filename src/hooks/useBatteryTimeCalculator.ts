@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect, KeyboardEvent } from 'react';
+import { ChangeEvent, useState, useEffect, KeyboardEvent, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSettingsStore } from '../store/settingsStore';
 
@@ -63,77 +63,99 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
     }
   };
 
-  const calculateBatteryPercentage = (currentVoltage: number): number => {
-    const maxVoltage = Number(settingsMaxVoltage) || 54;
-    const minVoltage = Number(settingsMinVoltage || 44);
-    const voltageRange = maxVoltage - minVoltage;
+  const calculateBatteryPercentage = useCallback(
+    (currentVoltage: number): number => {
+      const maxVoltage = Number(settingsMaxVoltage) || 52;
+      const minVoltage = Number(settingsMinVoltage || 44);
+      const voltageRange = maxVoltage - minVoltage;
 
-    // Calculate percentage based on voltage range
-    const percentage = ((currentVoltage - minVoltage) / voltageRange) * 100;
+      // Calculate percentage based on voltage range
+      const percentage = ((currentVoltage - minVoltage) / voltageRange) * 100;
 
-    // Clamp percentage to range [0, 100]
-    return Math.ceil(Math.max(0, Math.min(100, percentage)));
-  };
+      // Clamp percentage to range [0, 100]
+      return Math.ceil(Math.max(0, Math.min(100, percentage)));
+    },
+    [settingsMaxVoltage, settingsMinVoltage]
+  );
 
-  const calculateRemainingTime = (currentVoltage: number, powerConsumption: number): void => {
-    if (!currentVoltage || !powerConsumption) {
-      setOutput(t('calculator.empty'));
-      return;
-    }
+  const getHoursWord = useCallback(
+    (hours: number): string => {
+      const hoursCases = [t('calculator.hours1'), t('calculator.hours2'), t('calculator.hours3')];
+      if (hours % 10 === 1 && hours % 100 !== 11) return hoursCases[1];
+      if (hours % 10 >= 2 && hours % 10 <= 4 && (hours % 100 < 10 || hours % 100 >= 20))
+        return hoursCases[2];
+      return hoursCases[0];
+    },
+    [t]
+  );
 
-    if (currentVoltage > settingsMaxVoltage) {
-      setOutput(t('calculator.maxError', { value: settingsMaxVoltage }));
-      return;
-    }
+  const getMinutesWord = useCallback(
+    (minutes: number): string => {
+      const minutesCases = [
+        t('calculator.minutes1'),
+        t('calculator.minutes2'),
+        t('calculator.minutes3')
+      ];
+      if (minutes % 10 === 1 && minutes % 100 !== 11) return minutesCases[0];
+      if (minutes % 10 >= 2 && minutes % 10 <= 4 && (minutes % 100 < 10 || minutes % 100 >= 20))
+        return minutesCases[1];
+      return minutesCases[2];
+    },
+    [t]
+  );
 
-    if (currentVoltage < settingsMinVoltage) {
-      setOutput(t('calculator.minError', { value: settingsMinVoltage }));
-      return;
-    }
+  const calculateRemainingTime = useCallback(
+    (currentVoltage: number, powerConsumption: number): void => {
+      if (!currentVoltage || !powerConsumption) {
+        setOutput(t('calculator.empty'));
+        return;
+      }
 
-    if (powerConsumption < 0) {
-      setOutput(t('calculator.lessZeroError'));
-      return;
-    }
+      if (currentVoltage > settingsMaxVoltage) {
+        setOutput(t('calculator.maxError', { value: settingsMaxVoltage }));
+        return;
+      }
 
-    const batteryCapacityWh = Number(settingsBatteryCapacity) * Number(settingsVoltageSystem); // Assuming 1000 Wh capacity for calculation
-    const percentage = calculateBatteryPercentage(currentVoltage);
-    const remainingCapacityWh = (percentage / 100) * batteryCapacityWh;
+      if (currentVoltage < settingsMinVoltage) {
+        setOutput(t('calculator.minError', { value: settingsMinVoltage }));
+        return;
+      }
 
-    const remainingTimeHours = remainingCapacityWh / powerConsumption;
+      if (powerConsumption < 0) {
+        setOutput(t('calculator.lessZeroError'));
+        return;
+      }
 
-    const hours = Math.floor(remainingTimeHours);
-    const minutes = Math.round((remainingTimeHours - hours) * 60);
+      const nominalVoltage = (Number(settingsMinVoltage) + Number(settingsMaxVoltage)) / 2;
+      const batteryCapacityWh = Number(settingsBatteryCapacity) * nominalVoltage;
+      const currentEnergy =
+        ((currentVoltage - Number(settingsMinVoltage)) /
+          (Number(settingsMaxVoltage) - Number(settingsMinVoltage))) *
+        batteryCapacityWh;
+      const timeLeft = currentEnergy / powerConsumption;
 
-    setPercentage(percentage);
+      const hours = Math.floor(timeLeft);
+      const minutes = Math.round((timeLeft - hours) * 60);
 
-    if (remainingTimeHours < 0.1) {
-      setOutput(t('calculator.notBatteryError'));
-      return;
-    }
+      setPercentage(calculateBatteryPercentage(currentVoltage));
 
-    setOutput(`${hours} ${getHoursWord(hours)} ${minutes} ${getMinutesWord(minutes)}`);
-  };
+      if (timeLeft < 0.1) {
+        setOutput(t('calculator.notBatteryError'));
+        return;
+      }
 
-  const getHoursWord = (hours: number): string => {
-    const hoursCases = [t('calculator.hours1'), t('calculator.hours2'), t('calculator.hours3')];
-    if (hours % 10 === 1 && hours % 100 !== 11) return hoursCases[1];
-    if (hours % 10 >= 2 && hours % 10 <= 4 && (hours % 100 < 10 || hours % 100 >= 20))
-      return hoursCases[2];
-    return hoursCases[0];
-  };
-
-  const getMinutesWord = (minutes: number): string => {
-    const minutesCases = [
-      t('calculator.minutes1'),
-      t('calculator.minutes2'),
-      t('calculator.minutes3')
-    ];
-    if (minutes % 10 === 1 && minutes % 100 !== 11) return minutesCases[0];
-    if (minutes % 10 >= 2 && minutes % 10 <= 4 && (minutes % 100 < 10 || minutes % 100 >= 20))
-      return minutesCases[1];
-    return minutesCases[2];
-  };
+      setOutput(`${hours} ${getHoursWord(hours)} ${minutes} ${getMinutesWord(minutes)}`);
+    },
+    [
+      calculateBatteryPercentage,
+      getHoursWord,
+      getMinutesWord,
+      settingsBatteryCapacity,
+      settingsMaxVoltage,
+      settingsMinVoltage,
+      t
+    ]
+  );
 
   useEffect(() => {
     calculateRemainingTime(volt, wat);
@@ -144,7 +166,8 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
     settingsMinVoltage,
     settingsMaxVoltage,
     settingsBatteryCapacity,
-    settingsVoltageSystem
+    settingsVoltageSystem,
+    calculateRemainingTime
   ]);
 
   useEffect(() => {
@@ -161,7 +184,7 @@ export const useBatteryTimeCalculator = (): BatteryCalculator => {
     } else {
       setWatError('');
     }
-  }, [volt, settingsMinVoltage, settingsMaxVoltage, wat]);
+  }, [volt, settingsMinVoltage, settingsMaxVoltage, wat, t]);
 
   return {
     output,
